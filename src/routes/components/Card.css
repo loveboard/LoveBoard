@@ -1,0 +1,19 @@
+.block1 {
+    /*
+    color: red;
+    border: 1px solid green;
+    */
+    width: 100px;
+    position: relative;
+}
+
+.block2 {
+    /*
+    color: blue;
+    border: 2px solid black;
+    */
+    width: 70px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
