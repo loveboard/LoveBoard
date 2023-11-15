@@ -1,6 +1,41 @@
 
 
-https://daisyui.com/components/card/#card-with-custom-color
 
-https://plyr.io/
+
+
+
+
+
+
+
+
+give style to cards inside the board/table of the profile
+    https://codesandbox.io/s/github/nelsieborja/gridstack-demo/tree/main/?file=/src/styles.scss:1397-1495
+    https://codesandbox.io/s/tremorui-forked-c8p9jc?file=/src/styles.css:260-325
+
+
+    daisyUI
+        https://daisyui.com/components/card/#card-with-custom-color
+        https://tailwindcss.com/docs/guides/vite
+        https://daisyui.com/docs/install/
+        https://stackblitz.com/edit/daisyui-react-vite/?file=tailwind.config.js
+
+    gridstack
+        https://codesandbox.io/search?query=GridStack&refinementList%5Bnpm_dependencies.dependency%5D%5B0%5D=gridstack&page=3&configure%5BhitsPerPage%5D=12
+
+
+        save styled cards and restore by tipe
+            view-source:https://gridstackjs.com/demo/serialization.html#
+
+                function saveGrid() {
+                    delete serializedFull;
+                    serializedData = grid.save();
+                    document.querySelector('#saved-data').value = JSON.stringify(serializedData, null, '  ');
+                }
+
+
+    youtube
+        https://plyr.io/
+
+
 

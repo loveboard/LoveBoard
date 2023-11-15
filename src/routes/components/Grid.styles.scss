@@ -123,11 +123,11 @@ header > button {
 }
 .ui-resizable-nw {
   left: 1px !important;
-  top: 1px !important;
+  // top: -8px !important;
 }
 .ui-resizable-ne {
   right: 1px !important;
-  top: 1px !important;
+  //top: -8px !important;
 }
 
 .ui-resizable-e {
