@@ -11,6 +11,7 @@ import interact from 'interactjs'
 import "./Card.css";
 import EditToolbar from "./subcomponents/editToolbar/EditToolbar";
 
+import PropTypes from 'prop-types';
 /*
 taphold | long press
 
@@ -38,6 +39,14 @@ export default function Card({
   actions,
   children,
 }) {
+  Card.propTypes = {
+    actions: PropTypes.shape({
+      handleRemove: PropTypes.func.isRequired,
+      // add other action prop types here
+    }).isRequired,
+    // add other prop types here
+  };
+  
   const cardRef = useRef(null);
   const [toggle, setToggle] = useState(true);
   const [title, setTitle] = useState(
@@ -47,8 +56,8 @@ export default function Card({
   const [editable, setEditable] = useState(false);
 
   useEffect(() => {
-    actions.handleRemove(cardRef.current, false);
-    actions.handleAdd(cardRef.current);
+
+
 
     //onLongpress(cardRef.current, handleEditCard);
 
