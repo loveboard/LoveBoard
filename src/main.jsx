@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom/client'
 /* pages/routes imports */
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
-import Contact from "./routes/contact";
 import Creator from "./routes/creator";
 
 import {
@@ -21,10 +20,6 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "contacts/:contactId",
-    element: <Contact />,
-  },,
   {
     path: "profile",
     element: <Creator />,

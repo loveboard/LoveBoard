@@ -100,7 +100,7 @@ export default function onLongpress(el, handler) {
 
   var longpress = false;
   var presstimer = null;
-  var longtarget = null;
+  // var longtarget = null;
 
   // https://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
@@ -119,6 +119,7 @@ export default function onLongpress(el, handler) {
 
   var cancel = function (e) {
     console.log("cancel ---------------------------------------------------------------");
+    console.log(e);
     if (presstimer !== null) {
       clearTimeout(presstimer);
       presstimer = null;
@@ -128,6 +129,7 @@ export default function onLongpress(el, handler) {
 
   var click = function (e) {
     console.log("click ---------------------------------------------------------------");
+    console.log(e);
     if (presstimer !== null) {
       clearTimeout(presstimer);
       presstimer = null;

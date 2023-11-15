@@ -1,7 +1,12 @@
 import { useRef, useEffect } from "react";
 //import { GridStack } from "gridstack";
+
 //import GridStack from "gridstack/dist/gridstack-jq";
 import GridStack from "gridstack/dist/gridstack-all";
+
+
+//import { GridStack } from 'gridstack';
+
 
 //import "gridstack/dist/gridstack-jq";
 import "gridstack/dist/gridstack.css";
@@ -9,12 +14,17 @@ import "gridstack/dist/gridstack.css";
 import "./Grid.styles.scss";
 import "./Grid.css";
 
-//const Item = ({ id }) => <div>I am item: {id}</div>;
+// const Item = ({ id }) => <div>I am item: {id}</div>;
 
 let id = 1;
-// eslint-disable-next-line react/prop-types
+import PropTypes from 'prop-types';
+
+
 export default function Grid({ children, setWidgets }) {
-  //const refs = useRef({});
+  Grid.propTypes = {
+    children: PropTypes.node,
+    setWidgets: PropTypes.func.isRequired,
+  };
   const gridRef = useRef();
 
   useEffect(() => {
