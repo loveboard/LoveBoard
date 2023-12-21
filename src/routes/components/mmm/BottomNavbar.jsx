@@ -97,7 +97,7 @@ buttons.forEach((item) => {
 });
 
 
-export default function Navbar({ children, saveWidgets}) {
+export default function Navbar({ children, saveWidgets, childFunc }) {
 
 
 
@@ -142,6 +142,7 @@ export default function Navbar({ children, saveWidgets}) {
     /**
      * minimize when chose an item to drop in the grid
      */
+    childFunc.current = handleClickPlusClose
 
     var e = document.getElementById("stacker");
     console.log("e", e);
@@ -161,7 +162,7 @@ export default function Navbar({ children, saveWidgets}) {
         console.log("no newWidget class");
       }
       // ui-droppable-active
-    });
+    }, [childFunc.current]);
 
     observer.observe(e, {
       attributes: true,

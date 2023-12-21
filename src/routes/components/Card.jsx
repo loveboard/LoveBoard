@@ -107,13 +107,19 @@ export default function Card({
     const changeName = (evt) => {
       console.log("changeName", evt);
     }; */
+  function unsetCardEditMode() {
 
-  const backCard = (evt) => {
-    console.log("backCard", evt);
     setEditable(false);
-    //cardRef.current.classList.remove("longpress");
     cardRef.current.classList.remove("longpress");
     cardRef.current.classList.remove("itemselected");
+  }
+  const backCard = (evt) => {
+    console.log("backCard", evt);
+
+    unsetCardEditMode();
+
+    //cardRef.current.classList.remove("longpress");
+
     //cardRef.current.class.remove('longpress');
     //cardRef.current.className.remove('longpress');
     //console.log("cardRef.current", cardRef.current);
@@ -128,8 +134,7 @@ export default function Card({
     // display a modal on top of the app
     document.getElementById('my_modal_3').showModal()
     // actions.handleRemove(cardRef.current, false);
-    actions.handleEdit(cardRef.current);
-    
+
 
   };
   /*   const handleEditCard = (flag) => {
@@ -155,9 +160,29 @@ export default function Card({
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           </form>
           <h3 className="font-bold text-lg">Hello!</h3>
-          <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+          <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs"
+
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                actions.handleEdit(cardRef.current, e.target.value);
+                unsetCardEditMode();
+                document.getElementById('my_modal_3').close("GG");
+              }
+              else {
+                console.log("nain")
+              }
+            }} />
 
           <p className="py-4">Press ESC key or click on ✕ button to close</p>
+          {/**
+           * 
+           * 
+           * 
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 bottom-2"
+            onClick={editable ? actions.handleEdit(cardRef.current,"Changed"): console.log("nain")}>Update</button>
+           * 
+           */}
         </div>
       </dialog>
       <div
@@ -173,7 +198,7 @@ export default function Card({
         // eslint-disable-next-line react/no-unknown-property
         gs-y={y}
       >
-        
+
 
         <div className="grid-stack-item-content card w-96 bg-primary text-primary-content">
           {editable ? (

@@ -11,6 +11,30 @@ import BottomNavbar from "./components/mmm/BottomNavbar"
 export default function Creator() {
   const [widgets1, setWidgets1] = useState([]);
   const gridRef = useRef();
+  const childFunc = useRef(null)
+
+
+
+  
+  function updateWidget1(id, content) {
+    // filter widgets1 based on the id property
+    // and return a new array with the updated widget
+    // https://www.robinwieruch.de/react-state-array-add-update-remove
+    // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+    // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
+
+    var cachedwidgets1 = widgets1.map((widget1) => {
+      if (widget1.id === id) {
+        return {
+          ...widget1,
+          content: content,
+        };
+      }
+      return widget1;
+    });
+    setWidgets1(cachedwidgets1);
+    console.log("card > ", id, "content > ", content)
+  }
 
 
   function saveWidgets() {
@@ -23,7 +47,7 @@ export default function Creator() {
     <button onClick={console.log("cards > ",widgets1)}> asdasd </button>
     <br />
     */}
-      <Grid setWidgets={setWidgets1} gridReference={gridRef}>
+      <Grid setWidgets={setWidgets1} updateWidget={updateWidget1} gridReference={gridRef} closeToolbar={() => childFunc.current()}>
         {(actions) =>
           widgets1.map(function (widget1, index) {
             const { component: Widget2, label } = WIDGETS[widget1.type];
@@ -86,8 +110,9 @@ export default function Creator() {
           })
         }
       </Grid>
-      <BottomNavbar saveWidgets={saveWidgets}>
+      <BottomNavbar saveWidgets={saveWidgets} childFunc={childFunc}>
         <Widgets />
+      <button onClick={() => childFunc.current()}>Click me</button>
       </BottomNavbar>
     </>
   );

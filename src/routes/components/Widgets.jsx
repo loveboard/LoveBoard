@@ -1,33 +1,14 @@
-/*
-<div style={{ textAlign: "center" }}>
-</div>
-*/
 
+import "./Widgets.css"
 
 export const WIDGETS = {
-  /*
   text: {
     component: (param) => <div style={{ textAlign: "center" }}>{param}</div>,
-    label: "Text"
-  },
-  */
-  text: {
-    component: (param) => <div style={{ textAlign: "center" }}>{param}</div>,
-
-    // component: () => <div style={{ textAlign: "center" }}>Text</div>,
     label: "Text",
     componente: (param) => <div style={{ textAlign: "center" }}>{param}</div>,
     
     default: "Hola soy Goku",
   },
-  /*
-  chart: {
-    component: () => <div className="card-body">Chart</div>,
-    label: "Charc vxt",
-  },
-  */
-
-
   photo: {
     component: () => (
       <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/4d/Furnarius.jpg/751px-Furnarius.jpg" alt="hornero" className="contain" />
@@ -65,15 +46,7 @@ export const WIDGETS = {
   },
 
 };
-{
-  /*
-frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
 
-*/
-}
-import "./Widgets.css"
 
 export function Widgets() {
   // https://www.w3schools.com/TAGS/att_data-.asp

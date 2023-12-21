@@ -9,7 +9,7 @@ import "./Grid.styles.scss"
 
 let id = 1;
 // eslint-disable-next-line react/prop-types
-export default function Grid({ children, setWidgets}) {
+export default function Grid({ children, setWidgets,updateWidget, closeToolbar}) {
   //const refs = useRef({});
   const gridRef = useRef();
 
@@ -95,7 +95,7 @@ export default function Grid({ children, setWidgets}) {
         setWidgets((items) => [
           ...items,
           {
-            id: id++,
+            id: 'identificator-'+id++,
             type: el.dataset.type,
             content: el.dataset.content,
             w,
@@ -111,6 +111,7 @@ export default function Grid({ children, setWidgets}) {
   const handleAdd = (el) => {
     if (el && gridRef.current) {
       gridRef.current.makeWidget(el);
+      closeToolbar();
     }
   };
   const handleRemove = (el, actualRemove = true) => {
@@ -120,11 +121,14 @@ export default function Grid({ children, setWidgets}) {
         setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
     }
   };
-  const handleEdit = (el) => {
+  const handleEdit = (el,newValue) => {
     if (el && gridRef.current) {
       console.log("handleEdit", el);
-      var newValue = parseInt(el.y) + 1;
-    	gridRef.current.update(el, {y: newValue});
+      console.log("id > ", el.id);
+      updateWidget(el.id, newValue)
+      //var newValue = parseInt(el.y) + 1;
+    	//gridRef.current.update(el, {y: newValue});
+    	//gridRef.current.update(el, {content: newValue});
       
       // idk, i should copy something from handleRemove above
     }
