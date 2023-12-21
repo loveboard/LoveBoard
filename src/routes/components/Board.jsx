@@ -9,7 +9,7 @@ import "./Grid.styles.scss"
 
 let id = 1;
 // eslint-disable-next-line react/prop-types
-export default function Grid({ children, setWidgets}) {
+export default function Board({ children, setWidgets}) {
   //const refs = useRef({});
   const gridRef = useRef();
 
@@ -136,6 +136,7 @@ export default function Grid({ children, setWidgets}) {
   };
 
   return (
+    <section>
       <div id="stacker" className="grid-stack">
         {children({
           handleAdd,
@@ -144,5 +145,6 @@ export default function Grid({ children, setWidgets}) {
           handleEnableMove,
         })}
       </div>
+    </section>
   );
 }

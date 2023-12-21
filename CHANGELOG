@@ -1,3 +1,4 @@
+import { GridStack } from "gridstack/dist/gridstack-all"
 
 
 
@@ -39,3 +40,19 @@ give style to cards inside the board/table of the profile
 
 
 
+
+
+    Vite + React fix Hot Reload
+        https://stackoverflow.com/questions/70996320/enable-hot-reload-for-vite-react-project-instead-of-page-reload
+        https://stackoverflow.com/questions/49595667/regex-starts-with-ends-with
+        regex to find cases
+        import.*.;
+
+
+
+
+
+
+GridStack Storage Approach
+https://stackoverflow.com/questions/45963610/gridstack-widgets-cant-be-moved-after-new-widgets-are-added
+https://jsfiddle.net/fm133mk6/

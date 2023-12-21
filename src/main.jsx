@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client'
 
 
 /* pages/routes imports */
-import Root from "./routes/root";
-import ErrorPage from "./error-page";
-import Creator from "./routes/creator";
+import Root from "./routes/root"
+import ErrorPage from "./error-page"
+import Creator from "./routes/creator"
 
 import {
   createBrowserRouter,

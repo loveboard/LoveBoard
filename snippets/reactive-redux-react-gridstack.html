@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .grid-stack-item-content {
+        color: #2c3e50;
+        text-align: center;
+        background-color: #efefef;
+      }
+    </style>
+
+
+<script src=""></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.3.0/gridstack.all.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.3.0/gridstack.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ractive/1.0.0-build-9/ractive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js"></script>
+
+
+  </head>
+  <body>
+    <script id="dashboardTemplate" type="text/ractive-template">
+      <WidgetGrid widgets="{{store.widgets}}" />
+       <a href="#" on-click="add">Add</a>
+    </script>
+
+    <script id="widgetGridTemplate" type="text/ractive-template">
+      <div class="grid-stack">
+          {{#each widgets:i}}
+          <Widget
+                    id="{{id}}"
+                  x="{{x}}"
+                  y="{{y}}"
+                  width="{{width}}"
+                  height="{{height}}"
+                  on-delete="@this.deleteWidget(id)"
+                  on-complete="@this.createWidget(id)"
+                  on-detach="@this.removeWidget(id)"
+          />
+          {{/each}}
+      </div>
+    </script>
+
+    <script id="widgetTemplate" type="text/ractive-template">
+      <div id="widget{{id}}" class="grid-stack-item" data-gs-x="{{x}}" data-gs-y="{{y}}" data-gs-width="{{width}}" data-gs-height="{{height}}">
+          <div class="grid-stack-item-content">
+          <svg></svg>
+           <a href="#" on-click="delete">Delete {{id}}</a>
+          </div>
+      </div>
+    </script>
+
+    <div id="dashboard"></div>
+    <script>
+      var Widget = Ractive.extend({
+        isolated: false, // To pass events to WidgetGrid component (makeWidget, removeWidget, etc.)
+        template: "#widgetTemplate",
+        components: {},
+        oninit: function () {
+          // Load data to widget
+        },
+        oncomplete: function () {
+          this.drawChart();
+        },
+
+        drawChart: function () {
+          var self = this;
+          function exampleData() {
+            return [
+              {
+                label: "One",
+                value: 29.765957771107,
+              },
+              {
+                label: "Two",
+                value: 0,
+              },
+              {
+                label: "Three",
+                value: 32.807804682612,
+              },
+              {
+                label: "Four",
+                value: 196.45946739256,
+              },
+              {
+                label: "Five",
+                value: 0.19434030906893,
+              },
+              {
+                label: "Six",
+                value: 98.079782601442,
+              },
+              {
+                label: "Seven",
+                value: 13.925743130903,
+              },
+              {
+                label: "Eight",
+                value: 5.1387322875705,
+              },
+            ];
+          }
+          nv.addGraph(function () {
+            var chart = nv.models
+              .pieChart()
+              .x(function (d) {
+                return d.label;
+              })
+              .y(function (d) {
+                return d.value;
+              })
+              .showLabels(true);
+
+            d3.select("#widget" + self.get("id") + " svg")
+              .datum(exampleData())
+              .transition()
+              .duration(350)
+              .call(chart);
+
+            return chart;
+          });
+        },
+
+        data: function () {
+          return {
+            id: null,
+            x: null,
+            y: null,
+            width: null,
+            height: null,
+          };
+        },
+      });
+
+      var WidgetGrid = Ractive.extend({
+        // isolated:false,
+        // twoway:false,
+
+        template: "#widgetGridTemplate",
+        components: {
+          Widget: Widget,
+        },
+        onrender: function () {
+          // Init gridstack instance
+          this.bindGridstack();
+        },
+
+        deleteWidget: function (id) {
+          Action.deleteWidget(id);
+        },
+
+        removeWidget: function (id) {
+          $(".grid-stack")
+            .data("gridstack")
+            .removeWidget("#widget" + id);
+        },
+
+        createWidget: function (id) {
+          $(".grid-stack")
+            .data("gridstack")
+            .makeWidget("#widget" + id);
+        },
+
+        updateWidgetSize: function (id, width, height) {
+          Action.updateWidgetSize(id, width, height);
+        },
+        updateWidgetPosition: function (id, x, y) {
+          Action.updateWidgetPosition(id, x, y);
+        },
+
+        bindGridstack: function () {
+          var self = this;
+          var options = {
+            animate: true,
+            auto: false, // if false gridstack will not initialize existing items (default: true)
+            float: true, // enable floating widgets (default: false)
+            disableOneColumnMode: true,
+            width: 10, //  amount of columns (default: 12)
+            height: 10, // maximum rows amount. Default is 0 which means no maximum rows
+            // height: 10,
+            // cellHeight: 80,
+            disableResize: false,
+            disableDrag: false,
+            verticalMargin: 0,
+            resizable: {
+              handles: "se",
+            },
+          };
+          var grid = $(".grid-stack").gridstack(options);
+
+          // On user ends resizing
+          grid.on("gsresizestop", function (event, elem) {
+            var $el = $(elem);
+            var node = $el.data("_gridstack_node");
+            var id = node.el.attr("id").replace("widget", "");
+
+            self.updateWidgetSize(
+              id,
+              node.width,
+              node.height,
+              node.el.css("width"),
+              node.el.css("height")
+            );
+          });
+
+          // On user ends dragging
+          grid.on("dragstop", function (event, ui) {
+            var $el = $(event.target);
+            var node = $el.data("_gridstack_node");
+            var id = $el.attr("id").replace("ar-widget", "");
+
+            self.updateWidgetPosition(id, node.x, node.y);
+          });
+        },
+
+        data: function () {
+          return {
+            widgets: [],
+          };
+        },
+      });
+
+      var Dashboard = Ractive.extend({
+        el: "#dashboard", //document.body,
+        template: "#dashboardTemplate",
+        isolated: true,
+        append: false,
+        oninit: function () {
+          this.on("add", function () {
+            Action.addWidget();
+          });
+        },
+        components: {
+          WidgetGrid: WidgetGrid,
+        },
+        data: function () {
+          return {
+            store: {},
+          };
+        },
+      });
+
+      function getUUID() {
+        var pattern = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+        var uid = pattern.replace(/[xy]/g, function (c) {
+          var r = (Math.random() * 16) | 0,
+            v = c == "x" ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        });
+
+        return uid;
+      }
+
+      /**
+Constants
+*/
+      var ADD_WIDGET = "ADD_WIDGET";
+      var DELETE_WIDGET = "DELETE_WIDGET";
+      var UPDATE_WIDGET = "UPDATE_WIDGET";
+      var UPDATE_WIDGET_POSITION = "UPDATE_WIDGET_POSITION";
+      var UPDATE_WIDGET_SIZE = "UPDATE_WIDGET_SIZE";
+
+      /**
+Actions
+*/
+      var Actions = {};
+      Actions.addWidget = function () {
+        return {
+          type: ADD_WIDGET,
+          payload: {},
+        };
+      };
+
+      Actions.updateWidgetSize = function (id, width, height) {
+        return {
+          type: UPDATE_WIDGET_SIZE,
+          payload: {
+            id: id,
+            width: width,
+            height: height,
+          },
+        };
+      };
+
+      Actions.updateWidgetPosition = function (id, x, y) {
+        return {
+          type: UPDATE_WIDGET_POSITION,
+          payload: {
+            id: id,
+            x: x,
+            y: y,
+          },
+        };
+      };
+
+      Actions.deleteWidget = function (id) {
+        return {
+          type: DELETE_WIDGET,
+          payload: {
+            id: id,
+          },
+        };
+      };
+
+      /**
+Widget reducer
+*/
+      widgets = function (state = [], action) {
+        switch (action.type) {
+          case ADD_WIDGET:
+            var newState = [].concat(state);
+
+            newState = [].concat(newState, {
+              id: getUUID(),
+              x: 0,
+              y: 0,
+              width: 4,
+              height: 4,
+            });
+            return newState;
+
+          case UPDATE_WIDGET_SIZE:
+            var newState = [].concat(state);
+
+            newState.map(function (element) {
+              if (element.id == action.payload.id) {
+                element.width = action.payload.width;
+                element.height = action.payload.height;
+              }
+              return element;
+            });
+            return newState;
+
+          case UPDATE_WIDGET_POSITION:
+            var newState = [].concat(state);
+
+            newState.map(function (element) {
+              if (element.id == action.payload.id) {
+                element.x = action.payload.x;
+                element.y = action.payload.y;
+              }
+              return element;
+            });
+            return newState;
+
+          case DELETE_WIDGET:
+            var newState = [].concat(state);
+
+            return newState.filter(function (element) {
+              return element.id !== action.payload.id;
+            });
+
+          default:
+            return [].concat(state);
+        }
+      };
+
+      /**
+   Initialization
+*/
+      var rootReducer = Redux.combineReducers({
+        widgets: widgets,
+      });
+
+      var store = Redux.createStore(rootReducer);
+
+      var Action = Redux.bindActionCreators(Actions, store.dispatch);
+
+      var app = new Dashboard({
+        el: "#dashboard",
+        data: {
+          store: store.getState(),
+        },
+      });
+
+      console.log("loaded", store.getState());
+      store.subscribe(function () {
+        console.log(
+          "APPUPDATE: ",
+          store.getState(),
+          JSON.stringify(store.getState().widgets)
+        );
+        app.set("store", store.getState());
+        app.update();
+        app.updateModel();
+      });
+
+      /**
+https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js
+https://code.jquery.com/jquery-1.8.3.min.js
+https://code.jquery.com/ui/1.11.4/jquery-ui.min.js
+https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js
+https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.3.0/gridstack.all.js
+https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/0.3.0/gridstack.min.css
+https://cdnjs.cloudflare.com/ajax/libs/ractive/1.0.0-build-9/ractive.min.js
+https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js
+https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.css
+https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js
+*/
+    </script>
+  </body>
+</html>

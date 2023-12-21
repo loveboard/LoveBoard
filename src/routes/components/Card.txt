@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-//import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState } from "react"
+//import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 
-// import LongPress from "./../scripts/LongPress";
+// import LongPress from "./../scripts/LongPress"
 import interact from 'interactjs'
 
 // https://github.com/taye/interact.js/issues/214
 // interact.debug().defaultOptions._holdDuration = 1500;
 
 
-import "./Card.css";
-import EditToolbar from "./subcomponents/editToolbar/EditToolbar";
+import "./Card.css"
+import EditToolbar from "./subcomponents/editToolbar/EditToolbar"
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 /*
 taphold | long press
 

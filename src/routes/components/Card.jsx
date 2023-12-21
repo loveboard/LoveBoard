@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-//import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState } from "react"
+//import { useEffect, useRef, useState, useCallback, useMemo } from "react"
 
-// import LongPress from "./../scripts/LongPress";
+// import LongPress from "./../scripts/LongPress"
 import interact from 'interactjs'
 
 // https://github.com/taye/interact.js/issues/214
 // interact.debug().defaultOptions._holdDuration = 1500;
 
 
-import "./Card.css";
-import EditToolbar from "./subcomponents/editToolbar/EditToolbar";
+import "./Card.css"
+import EditToolbar from "./subcomponents/editToolbar/EditToolbar"
 
 /*
 taphold | long press
@@ -28,23 +28,33 @@ https://codepen.io/borntofrappe/pen/jOEKERG
 
 */
 
+
+
 export default function Card({
   id,
-  title: initialTitle,
+  //title: initialTitle,
   w,
   h,
   x,
   y,
   actions,
   children,
+  content,
+  type
+
 }) {
   const cardRef = useRef(null);
+  /*
   const [toggle, setToggle] = useState(true);
   const [title, setTitle] = useState(
     initialTitle || "Double click to change title"
   );
+  */
   const [visible, setVisible] = useState(true);
   const [editable, setEditable] = useState(false);
+
+
+  const [modalMedia, setmodalMedia] = useState({});
 
   useEffect(() => {
     actions.handleRemove(cardRef.current, false);
@@ -62,41 +72,41 @@ export default function Card({
     };
     */
     interact(cardRef.current)
-    .on('tap', function (event) {
-      console.log("tap", event);
-      // event.currentTarget.classList.toggle('switch-bg')
-      event.preventDefault()
-    })
-    .on('doubletap', function (event) {
-      console.log("doubletap", event);
-      // event.currentTarget.classList.toggle('large')
-      // event.currentTarget.classList.remove('rotate')
-      event.preventDefault()
-    })
-    .on('hold', function (event) {
-      console.log("hold", event);
-      setEditable(true);
-      // event.currentTarget.classList.toggle('rotate')
-      // event.currentTarget.classList.remove('large')
-    })
+      .on('tap', function (event) {
+        console.log("tap", event);
+        // event.currentTarget.classList.toggle('switch-bg')
+        event.preventDefault()
+      })
+      .on('doubletap', function (event) {
+        console.log("doubletap", event);
+        // event.currentTarget.classList.toggle('large')
+        // event.currentTarget.classList.remove('rotate')
+        event.preventDefault()
+      })
+      .on('hold', function (event) {
+        console.log("hold", event);
+        setEditable(true);
+        // event.currentTarget.classList.toggle('rotate')
+        // event.currentTarget.classList.remove('large')
+      })
 
 
 
   }, []);
 
-/*   const handleToggle = (flag) => {
-    setToggle(flag);
-    actions.handleEnableMove(flag);
-  };
-  const handleTapHold = (flag) => {
-    //setToggle(flag);
-    //actions.handleEnableMove(flag);
-    console.log("handleTapHold");
-  };
-
-  const changeName = (evt) => {
-    console.log("changeName", evt);
-  }; */
+  /*   const handleToggle = (flag) => {
+      setToggle(flag);
+      actions.handleEnableMove(flag);
+    };
+    const handleTapHold = (flag) => {
+      //setToggle(flag);
+      //actions.handleEnableMove(flag);
+      console.log("handleTapHold");
+    };
+  
+    const changeName = (evt) => {
+      console.log("changeName", evt);
+    }; */
 
   const backCard = (evt) => {
     console.log("backCard", evt);
@@ -115,12 +125,18 @@ export default function Card({
   };
   const editCard = (evt) => {
     console.log("editCard", evt);
+    // display a modal on top of the app
+    document.getElementById('my_modal_3').showModal()
+    // actions.handleRemove(cardRef.current, false);
+    actions.handleEdit(cardRef.current);
+    
+
   };
-/*   const handleEditCard = (flag) => {
-    setEditable(true);
-    console.log("handleEditCard", flag);
-  };
- */
+  /*   const handleEditCard = (flag) => {
+      setEditable(true);
+      console.log("handleEditCard", flag);
+    };
+   */
   const delCard = (evt) => {
     console.log("delCard", evt);
     //gridRef.current.removeWidget(el, false);
@@ -131,45 +147,47 @@ export default function Card({
   };
 
   return visible ? (
-    <div
-      ref={cardRef}
-      id={`${id}`} // convert to string
-      className="grid-stack-item"
-      gs-w={w}
-      gs-h={h}
-      gs-x={x}
-      gs-y={y}
-    >
-      {/**
-       * Toolbar
-       */}
+    <>
+      <dialog id="my_modal_3" className="modal">
+        <div className="modal-box">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          </form>
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
 
+          <p className="py-4">Press ESC key or click on ✕ button to close</p>
+        </div>
+      </dialog>
+      <div
+        ref={cardRef}
+        id={`${id}`} // convert to string
+        className="grid-stack-item"
+        // eslint-disable-next-line react/no-unknown-property
+        gs-w={w}
+        // eslint-disable-next-line react/no-unknown-property
+        gs-h={h}
+        // eslint-disable-next-line react/no-unknown-property
+        gs-x={x}
+        // eslint-disable-next-line react/no-unknown-property
+        gs-y={y}
+      >
+        
 
-
-<div className="card w-96 bg-primary text-primary-content">
-  <div className="card-body">
-    <h2 className="card-title">Card title!</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-    <div className="card-actions justify-end">
-      <button className="btn">Buy Now</button>
-    </div>
-  </div>
-</div>
-
-
-      <div className="grid-stack-item-content">
-        {editable ? (
-          <EditToolbar
-            className=""
-            delCard={delCard}
-            editCard={editCard}
-            backCard={backCard}
-          ></EditToolbar>
-        ) : (
-          <div />
-        )}
-        {children}
-        {/*
+        <div className="grid-stack-item-content card w-96 bg-primary text-primary-content">
+          {editable ? (
+            <EditToolbar
+              className=""
+              delCard={delCard}
+              editCard={editCard}
+              backCard={backCard}
+            ></EditToolbar>
+          ) : (
+            <div />
+          )}
+          {children}
+          {/*   
         <header>
           {toggle ? (
             <h2
@@ -205,9 +223,11 @@ export default function Card({
           </button>
         </header>
          */}
+
+
+
+        </div>
       </div>
-    </div>
-  ) : (
-    <div />
-  );
+    </>
+  ) : (<div />);
 }

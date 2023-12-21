@@ -1,13 +1,12 @@
-import { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect } from "react"
 
-import anime from "animejs/lib/anime.es.js";
+import anime from "animejs/lib/anime.es.js"
 
-import "./BottomNavbar.css";
+import "./BottomNavbar.css"
 
 const buttons = document.querySelectorAll(".bottom-navbar button:not(.float)");
 //const buttons = document.querySelectorAll(".bottom-navbar button:not(.float)");
-const effect = document.querySelector(".effect");
-const container = document.querySelector(".container");
 let y = 0;
 let moveY = 0;
 let open = false;
@@ -97,28 +96,48 @@ buttons.forEach((item) => {
   });
 });
 
-function handleClickPlus(evt) {
-  anime({
-    targets: ".container",
-    translateY: `-${window.innerHeight / 2}px`,
-    duration: 600,
-  });
-  open = true;
-  y = window.innerHeight / 2;
-  moveY = moveY + window.innerHeight / 2;
-}
 
-function handleClickPlusClose(evt) {
-  anime({
-    targets: ".container",
-    translateY: `0px`,
-    duration: 600,
-    easing: "easeOutExpo",
-  });
-  open = false;
-}
+export default function Navbar({ children, saveWidgets}) {
 
-export default function Navbar({ children }) {
+
+
+  function handleClickPlus(evt) {
+    console.log("handleClickPlus");
+    console.log(evt);
+    anime({
+      targets: ".container",
+      translateY: `-${window.innerHeight / 2}px`,
+      duration: 600,
+    });
+    open = true;
+    y = window.innerHeight / 2;
+    moveY = moveY + window.innerHeight / 2;
+  }
+  
+  function handleClickPlusClose(evt) {
+    console.log("handleClickPlusClose");
+    console.log(evt);
+    anime({
+      targets: ".container",
+      translateY: `0px`,
+      duration: 600,
+      easing: "easeOutExpo",
+    });
+    open = false;
+  }
+
+  
+
+
+  function handleClickSave(evt) {
+    // console.log("handleClickSave");
+    // console.log(evt);
+    saveWidgets();
+  
+    
+  }
+
+
   useEffect(() => {
     /**
      * minimize when chose an item to drop in the grid
@@ -179,7 +198,7 @@ export default function Navbar({ children }) {
         <button>
           <i className="bx bx-skip-next"></i>
         </button>
-        <button>
+        <button  onClick={handleClickSave}>
           <i className="bx bxs-save"></i>
         </button>
       </div>

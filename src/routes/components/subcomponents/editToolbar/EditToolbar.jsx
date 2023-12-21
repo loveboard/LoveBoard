@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import "./EditToolbar.css";
+import { useEffect, useState } from "react"
+import "./EditToolbar.css"
 
 /*
 
@@ -21,7 +21,8 @@ export default function EditToolbar(props) {
      * run after render
      */
   }, []);
-  const [visible, setVisible] = useState(true);
+  const [visible] = useState(true);
+  //const [visible, setVisible] = useState(true);
 
   return visible ? (
     <div className="ItemPreviewPopOutButton">
