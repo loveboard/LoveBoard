@@ -129,11 +129,10 @@ export default function Card({
     //cardRef.classList.remove('longpress');
     //cardRef.current.classList.add("longpress2");
   };
-  const editCard = (evt) => {
+  const editCard = (evt,id) => {
     console.log("editCard", evt);
     // display a modal on top of the app
-    document.getElementById('my_modal_3').showModal()
-    // actions.handleRemove(cardRef.current, false);
+    document.getElementById(id).showModal()
 
 
   };
@@ -142,32 +141,35 @@ export default function Card({
       console.log("handleEditCard", flag);
     };
    */
-  const delCard = (evt) => {
-    console.log("delCard", evt);
+  const delCard = (evt,id) => {
+    console.log("Card.JSX -> delCard ❌", evt, id)
+    //console.log("delCard", evt);
     //gridRef.current.removeWidget(el, false);
-    actions.handleRemove(cardRef.current, false);
+    actions.handleRemove(cardRef.current);
     //this.props.unmountMe();
     //ReactDOM.unmountComponentAtNode(ref.current);
     setVisible(false);
-  };
+    };
 
   return visible ? (
     <>
-      <dialog id="my_modal_3" className="modal">
+          <dialog id={`my_modal_${id}`} className="modal">
         <div className="modal-box">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
           </form>
           <h3 className="font-bold text-lg">Hello!</h3>
+          <h3 className="text-lg">the id is: {`${id}`}</h3>
+          <h3 className="text-lg">the id is: {`${cardRef.current}`}</h3>
           <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs"
 
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                actions.handleEdit(cardRef.current, e.target.value);
+                actions.handleEdit(id, e.target.value);
                 unsetCardEditMode();
-                document.getElementById('my_modal_3').close("GG");
+                document.getElementById(`my_modal_${id}`).close("GG");
               }
               else {
                 console.log("nain")
@@ -204,53 +206,14 @@ export default function Card({
           {editable ? (
             <EditToolbar
               className=""
-              delCard={delCard}
-              editCard={editCard}
+              delCard={(event) => delCard(event, id)}
+              editCard={(event) => editCard(event, `my_modal_${id}`)}
               backCard={backCard}
             ></EditToolbar>
           ) : (
             <div />
           )}
           {children}
-          {/*   
-        <header>
-          {toggle ? (
-            <h2
-              title="Double click to change title"
-              onDoubleClick={() => handleToggle(false)}
-            >
-              {title}
-            </h2>
-          ) : (
-            <input
-              autoFocus
-              type="text"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === "Escape") {
-                  handleToggle(true);
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-              }}
-              onBlur={() => handleToggle(true)}
-            />
-          )}
-
-          <button
-            title="Delete widget"
-            onClick={() => {
-              actions.handleRemove(cardRef.current);
-            }}
-          >
-            &#x2715;
-          </button>
-        </header>
-         */}
-
-
-
         </div>
       </div>
     </>

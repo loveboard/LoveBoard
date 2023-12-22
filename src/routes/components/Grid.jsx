@@ -3,13 +3,13 @@ import GridStack from "gridstack/dist/gridstack-all"
 import "gridstack/dist/gridstack.css"
 
 import "./Grid.styles.scss"
- import "./Grid.css"
+import "./Grid.css"
 
 //const Item = ({ id }) => <div>I am item: {id}</div>;
 
 let id = 1;
 // eslint-disable-next-line react/prop-types
-export default function Grid({ children, setWidgets,updateWidget, closeToolbar}) {
+export default function Grid({ children, setWidgets, updateWidget, closeToolbar }) {
   //const refs = useRef({});
   const gridRef = useRef();
 
@@ -55,7 +55,10 @@ export default function Grid({ children, setWidgets,updateWidget, closeToolbar})
       //cellWidth:"initial",
 
     });
-
+    function createId(num) {
+      //return `identificator-${num}-${Math.floor(Math.random() * 1000)}`;  
+      return `identificator-${num}`;
+    }
     const grid = gridRef.current;
     // GridStack.setupDragIn(gridRef.current, '.droppable');
     // https://github.com/gridstack/gridstack.js/issues/2231
@@ -69,33 +72,34 @@ export default function Grid({ children, setWidgets,updateWidget, closeToolbar})
      */
     // new 4.x static method instead of setting up options on every grid (never been per grid really)
     GridStack.setupDragIn(
-      '.droppable', 
-      { 
-        appendTo: ".grid-stack", 
+      '.droppable',
+      {
+        appendTo: ".grid-stack",
         revert: "invalid",
         scroll: false,
-        helper: "clone" 
+        helper: "clone"
       });
     // GridStack.setupDragIn(); // second call will now work (cache last values)
 
-      /*
+    /*
 
-    grid.load([
-      { x: 0, y: 0, content: "1" },
-      { x: 0, y: 1, h: 2, content: "2" },
-      { x: 0, y: 3, content: "3" },
-    ]);
-    */
+  grid.load([
+    { x: 0, y: 0, content: "1" },
+    { x: 0, y: 1, h: 2, content: "2" },
+    { x: 0, y: 3, content: "3" },
+  ]);
+  */
 
     if (grid) {
       grid.on("dropped", function (event, previousWidget, newWidget) {
         console.log("dropped", event, previousWidget, newWidget);
         const { el, w, h, x, y } = newWidget;
         grid.removeWidget(el);
+
         setWidgets((items) => [
           ...items,
           {
-            id: 'identificator-'+id++,
+            id: createId(id++),
             type: el.dataset.type,
             content: el.dataset.content,
             w,
@@ -114,22 +118,50 @@ export default function Grid({ children, setWidgets,updateWidget, closeToolbar})
       closeToolbar();
     }
   };
+
+  /*
   const handleRemove = (el, actualRemove = true) => {
+    if (el && gridRef.current) {
+      gridRef.current.removeWidget(el, false);
+      console.log("GRID.JSX -> handleRemove ❌", el.id)
+
+      if (actualRemove) {
+        //setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
+
+        setWidgets((items) => {
+          console.log("GRID.JSX -> handleRemove -> items before -> ", items)
+          var itemsitos = items.filter((item) => `${item.id}` !== el.id)
+          console.log("GRID.JSX -> handleRemove -> items later -> ", itemsitos)
+          return itemsitos
+        });
+      }
+      //actualRemove && setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
+
+
+    }
+    else {
+
+      console.log("GRID.JSX -> handleRemove ✅", el.id)
+    }
+  };*/
+  const handleRemove = (el, actualRemove = true) => {
+    console.log("GRID.JSX -> handleRemove ❌", el.id)
     if (el && gridRef.current) {
       gridRef.current.removeWidget(el, false);
       actualRemove &&
         setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
     }
   };
-  const handleEdit = (el,newValue) => {
-    if (el && gridRef.current) {
-      console.log("handleEdit", el);
-      console.log("id > ", el.id);
-      updateWidget(el.id, newValue)
+
+  const handleEdit = (id, newValue) => {
+    if (id && gridRef.current) {
+      console.log("handleEdit", id);
+      console.log("id > ", id);
+      updateWidget(id, newValue);
       //var newValue = parseInt(el.y) + 1;
-    	//gridRef.current.update(el, {y: newValue});
-    	//gridRef.current.update(el, {content: newValue});
-      
+      //gridRef.current.update(el, {y: newValue});
+      //gridRef.current.update(el, {content: newValue});
+
       // idk, i should copy something from handleRemove above
     }
   };
@@ -140,13 +172,13 @@ export default function Grid({ children, setWidgets,updateWidget, closeToolbar})
   };
 
   return (
-      <div id="stacker" className="grid-stack">
-        {children({
-          handleAdd,
-          handleRemove,
-          handleEdit,
-          handleEnableMove,
-        })}
-      </div>
+    <div id="stacker" className="grid-stack">
+      {children({
+        handleAdd,
+        handleRemove,
+        handleEdit,
+        handleEnableMove,
+      })}
+    </div>
   );
 }

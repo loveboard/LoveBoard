@@ -17,24 +17,33 @@ export default function Creator() {
 
   
   function updateWidget1(id, content) {
+    console.log("creator.jsx > updateWidget1 > ",id, content)
     // filter widgets1 based on the id property
     // and return a new array with the updated widget
     // https://www.robinwieruch.de/react-state-array-add-update-remove
     // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
     // https://stackoverflow.com/questions/29537299/react-how-to-update-state-item1-in-state-using-setstate
 
-    var cachedwidgets1 = widgets1.map((widget1) => {
-      if (widget1.id === id) {
+    var cachedwidgets1 = widgets1.map((widgeter) => {
+      console.log("creator.jsx > updateWidget1 > looping",widgeter.id)
+      if (widgeter.id === id) {
+        console.log("new value of widget > ",widgeter.id, id, content)
         return {
-          ...widget1,
+          ...widgeter,
           content: content,
         };
       }
-      return widget1;
+      return widgeter;
     });
     setWidgets1(cachedwidgets1);
     console.log("card > ", id, "content > ", content)
-  }
+  }  
+
+/* 
+  function removeWidget1(id) {
+    const updatedWidgets1 = widgets1.filter((widget) => widget.id !== id);
+    setWidgets1(updatedWidgets1);
+  } */
 
 
   function saveWidgets() {
@@ -50,11 +59,11 @@ export default function Creator() {
       <Grid setWidgets={setWidgets1} updateWidget={updateWidget1} gridReference={gridRef} closeToolbar={() => childFunc.current()}>
         {(actions) =>
           widgets1.map(function (widget1, index) {
-            const { component: Widget2, label } = WIDGETS[widget1.type];
-            //var Widgett = WIDGETS[widget.type].component("https://open.spotify.com/embed/playlist/0tXXPwNy3u0wPSPXYPuUaY?utm_source=generator&theme=0")
-            console.log("widget", Widget2)
+            // const { component: Widget2, label } = WIDGETS[widget1.type];
+            // var Widgett = WIDGETS[widget.type].component("https://open.spotify.com/embed/playlist/0tXXPwNy3u0wPSPXYPuUaY?utm_source=generator&theme=0")
+            // console.log("widget", Widget2)
 
-
+            const { label } = WIDGETS[widget1.type];
 
             /*
             //const MiWidget = WIDGETS[widget1.type].component; // Aquí seleccionamos el componente que queremos renderizar
@@ -73,14 +82,14 @@ export default function Creator() {
             const { componente: WidgetComponent, label2, default: defaultParam } = WIDGETS[widget1.type];
             */
 
-            var parametro = WIDGETS[widget1.type].default; // Aquí obtenemos el valor por defecto para pasar al componente
+            // var parametro = WIDGETS[widget1.type].default; // Aquí obtenemos el valor por defecto para pasar al componente
             //var MiWidget = WIDGETS[widget1.type].component; // Aquí seleccionamos el componente que queremos renderizar
 
             //console.log("MiWidget", MiWidget)
             //console.log(MiWidget)
 
             return (
-              Widget2 && (
+              widget1 && (
                 <Card
                   key={index}
                   actions={actions}
