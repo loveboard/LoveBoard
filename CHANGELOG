@@ -56,3 +56,13 @@ give style to cards inside the board/table of the profile
 GridStack Storage Approach
 https://stackoverflow.com/questions/45963610/gridstack-widgets-cant-be-moved-after-new-widgets-are-added
 https://jsfiddle.net/fm133mk6/
+
+
+
+
+#fixing the issue
+https://codesandbox.io/search?query=gridstack%20forked%20mobile%20support&page=1&configure%5BhitsPerPage%5D=12
+https://codesandbox.io/p/sandbox/gridstack-forked-mobile-support-jh38r8?file=%2Fsrc%2Fcomponents%2FGrid.js%3A69%2C9-69%2C21
+https://codesandbox.io/p/sandbox/gridstack-example-595m35?file=%2Findex.html%3A778%2C34
+https://codesandbox.io/p/sandbox/vibvy
+https://github.com/gridstack/gridstack.js/tree/master/doc#removewidgetel-removedom--true-triggerevent--true
