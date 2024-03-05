@@ -207,6 +207,7 @@ export default function Navbar({ children, saveWidgets, childFunc }) {
         <button onClick={handleClickPlusClose}>
           <i className="bx bx-x bx-sm"></i>
         </button>
+        <button onClick={() => methodDoesNotExist()}>Break the world</button>
         <p>Chose the media option to insert</p>
         {/*
         <button onClick={handleClickPlusClose}>Close</button>

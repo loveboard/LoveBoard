@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import process from 'node:process'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -67,5 +68,13 @@ const manifestForPlugin = {
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
-  plugins: [react(), VitePWA(manifestForPlugin)],
+
+  plugins: [react(), VitePWA(manifestForPlugin), sentryVitePlugin({
+    org: "sain-yu",
+    project: "javascript-react"
+  })],
+
+  build: {
+    sourcemap: true
+  }
 })

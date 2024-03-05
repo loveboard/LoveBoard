@@ -142,6 +142,7 @@ export default function Card({
     };
    */
   const delCard = (evt,id) => {
+    console.log("console log for luis")
     console.log("Card.JSX -> delCard ❌", evt, id)
     //console.log("delCard", evt);
     //gridRef.current.removeWidget(el, false);

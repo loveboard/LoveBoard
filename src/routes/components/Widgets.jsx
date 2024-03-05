@@ -41,7 +41,6 @@ export const WIDGETS = {
       </div>
     ),
     label: "Spotify",
-    label: "Spotify",
     default: "0tXXPwNy3u0wPSPXYPuUaY",
   },
 

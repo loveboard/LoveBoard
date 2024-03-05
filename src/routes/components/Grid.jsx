@@ -147,9 +147,8 @@ export default function Grid({ children, setWidgets, updateWidget, closeToolbar 
   const handleRemove = (el, actualRemove = true) => {
     console.log("GRID.JSX -> handleRemove ❌", el.id)
     if (el && gridRef.current) {
-      gridRef.current.removeWidget(el, false);
-      actualRemove &&
-        setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
+      actualRemove && gridRef.current.removeWidget(el, false);
+      actualRemove && setWidgets((items) => items.filter((item) => `${item.id}` !== el.id));
     }
   };
 
